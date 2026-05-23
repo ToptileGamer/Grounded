@@ -30,8 +30,8 @@ export default function Contact() {
                       </svg>
                     ),
                     title: 'Email',
-                    value: 'hello@groundedpulse.com',
-                    href: 'mailto:hello@groundedpulse.com',
+                    value: 'hayzentechsolutions@gmail.com',
+                    href: 'mailto:hayzentechsolutions@gmail.com',
                   },
                   {
                     icon: (

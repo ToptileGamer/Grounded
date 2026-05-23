@@ -132,7 +132,7 @@ export default function ContactForm() {
             </svg>
             <p className="text-sm text-red-700 font-medium">
               Something went wrong. Please try again or email us directly at{' '}
-              <a href="mailto:hello@groundedpulse.com" className="underline">hello@groundedpulse.com</a>.
+              <a href="mailto:hayzentechsolutions@gmail.com" className="underline">hayzentechsolutions@gmail.com</a>.
             </p>
           </div>
         )}
