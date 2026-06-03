@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { submitContact } from '../lib/api'
 import Reveal from './Reveal'
 
 export default function ContactForm() {
@@ -18,27 +19,17 @@ export default function ContactForm() {
     e.preventDefault()
     setStatus('sending')
 
-    // Using Formspree for email delivery — free tier allows 50 submissions/month
     try {
-      const response = await fetch('https://formspree.io/f/xgvavkqb', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          type: formData.type,
-          message: formData.message,
-          _subject: `[Grounded Pulse] ${formData.type === 'school' ? 'School Inquiry' : 'General Contact'} from ${formData.name}`,
-        }),
+      await submitContact({
+        name: formData.name,
+        email: formData.email,
+        type: formData.type,
+        message: formData.message,
       })
-
-      if (response.ok) {
-        setStatus('success')
-        setFormData({ name: '', email: '', type: 'general', message: '' })
-      } else {
-        setStatus('error')
-      }
-    } catch {
+      setStatus('success')
+      setFormData({ name: '', email: '', type: 'general', message: '' })
+    } catch (err) {
+      console.error('[ContactForm] Submission error:', err)
       setStatus('error')
     }
   }

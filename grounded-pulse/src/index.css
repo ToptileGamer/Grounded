@@ -49,6 +49,10 @@
   ::selection {
     @apply bg-brand-200 text-brand-900;
   }
+
+  section[id] {
+    scroll-margin-top: 80px;
+  }
 }
 
 @layer utilities {

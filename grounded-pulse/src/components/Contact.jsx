@@ -75,13 +75,19 @@ export default function Contact() {
               <div className="mt-8 pt-6 border-t border-slate-200">
                 <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Follow us</div>
                 <div className="flex gap-3">
-                  {['Twitter', 'Instagram', 'LinkedIn'].map((s) => (
+                  {[
+                    { name: 'Twitter', href: 'https://twitter.com/hayzentech' },
+                    { name: 'Instagram', href: 'https://instagram.com/hayzentech' },
+                    { name: 'LinkedIn', href: 'https://linkedin.com/company/hayzentech' },
+                  ].map((s) => (
                     <a
-                      key={s}
-                      href="#"
+                      key={s.name}
+                      href={s.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="text-xs font-medium text-slate-500 hover:text-slate-900 bg-white border border-slate-200 rounded-lg px-3 py-1.5 transition-all hover:border-slate-300"
                     >
-                      {s}
+                      {s.name}
                     </a>
                   ))}
                 </div>

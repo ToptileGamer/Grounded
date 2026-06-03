@@ -38,7 +38,7 @@ export default function Hero() {
             <Reveal variant="fade-up" delay={0.3}>
             <div className="flex flex-wrap gap-4">
               <a
-                href="#pricing"
+                href="#waitlist"
                 className="inline-flex items-center gap-2 bg-slate-900 text-white text-base font-semibold px-7 py-3.5 rounded-xl hover:bg-slate-800 transition-all hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97]"
               >
                 Join the Waitlist

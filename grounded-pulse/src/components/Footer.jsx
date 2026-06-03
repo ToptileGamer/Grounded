@@ -1,45 +1,16 @@
-const footerLinks = {
-  Product: [
-    { label: 'Features', href: '#features' },
-    { label: 'How It Works', href: '#how-it-works' },
-    { label: 'Pricing', href: '#pricing' },
-    { label: 'FAQ', href: '#' },
-  ],
-  'For Users': [
-    { label: 'For Students', href: '#for-students' },
-    { label: 'For Parents', href: '#for-parents' },
-    { label: 'For Schools', href: '#for-schools' },
-    { label: 'Waitlist', href: '#pricing' },
-  ],
-  Company: [
-    { label: 'About', href: '#' },
-    { label: 'Blog', href: '#' },
-    { label: 'Privacy', href: '#' },
-    { label: 'Terms', href: '#' },
-  ],
-  Support: [
-    { label: 'Help Center', href: '#' },
-    { label: 'Contact', href: '#' },
-    { label: 'Status', href: '#' },
-    { label: 'Feedback', href: '#' },
-  ],
-}
-
-const socialLinks = [
-  { label: 'Twitter', href: '#' },
-  { label: 'Instagram', href: '#' },
-  { label: 'LinkedIn', href: '#' },
-  { label: 'YouTube', href: '#' },
-]
+import { FOOTER_LINKS, SOCIAL_LINKS, SITE_NAME } from '../data/constants'
+import LegalOverlay from './utils/LegalOverlay'
+import { useState } from 'react'
 
 export default function Footer() {
+  const [legal, setLegal] = useState(null) // 'privacy' | 'terms' | 'cookies' | null
   return (
     <footer className="relative bg-slate-900 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
         <div className="grid grid-cols-2 md:grid-cols-6 gap-8 lg:gap-12">
           {/* Brand column */}
           <div className="col-span-2">
-            <a href="#" className="flex items-center gap-2.5 group mb-4">
+            <a href="#" className="flex items-center gap-2.5 group mb-4" aria-label="Grounded Pulse Home">
               <div className="relative w-8 h-8">
                 <div className="absolute inset-0 bg-gradient-to-br from-brand-400 to-deep-500 rounded-lg rotate-45" />
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -57,22 +28,24 @@ export default function Footer() {
             </p>
 
             {/* Social links */}
-            <div className="flex items-center gap-4">
-              {socialLinks.map((link) => (
+            <div className="flex items-center gap-3">
+              {SOCIAL_LINKS.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
-                  className="text-slate-500 hover:text-white transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-500 hover:text-white transition-colors text-sm"
                   aria-label={link.label}
                 >
-                  <span className="text-xs font-medium">{link.label}</span>
+                  {link.label}
                 </a>
               ))}
             </div>
           </div>
 
           {/* Link columns */}
-          {Object.entries(footerLinks).map(([category, links]) => (
+          {FOOTER_LINKS.map(({ category, links }) => (
             <div key={category}>
               <h4 className="text-xs font-semibold text-white uppercase tracking-wider mb-4">{category}</h4>
               <ul className="space-y-3">
@@ -94,17 +67,20 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-16 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-slate-500">
-            &copy; {new Date().getFullYear()} Grounded Pulse. All rights reserved.
+            &copy; {new Date().getFullYear()} {SITE_NAME}. All rights reserved.
           </p>
           <div className="flex items-center gap-4 text-xs text-slate-500">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+            <button onClick={() => setLegal('privacy')} className="hover:text-white transition-colors cursor-pointer">Privacy Policy</button>
             <span className="text-slate-700">·</span>
-            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+            <button onClick={() => setLegal('terms')} className="hover:text-white transition-colors cursor-pointer">Terms of Service</button>
             <span className="text-slate-700">·</span>
-            <a href="#" className="hover:text-white transition-colors">Cookie Policy</a>
+            <button onClick={() => setLegal('cookies')} className="hover:text-white transition-colors cursor-pointer">Cookie Policy</button>
           </div>
         </div>
       </div>
+
+      {/* Legal overlay */}
+      {legal && <LegalOverlay type={legal} onClose={() => setLegal(null)} />}
     </footer>
   )
 }

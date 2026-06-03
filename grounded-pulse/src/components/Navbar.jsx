@@ -1,12 +1,5 @@
 import { useState, useEffect } from 'react'
-
-const navLinks = [
-  { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Features', href: '#features' },
-  { label: 'For You', href: '#for-students' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Contact', href: '#contact' },
-]
+import { NAV_LINKS } from '../data/constants'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -18,18 +11,35 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Close mobile menu on escape key
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === 'Escape') setMobileOpen(false)
+    }
+    document.addEventListener('keydown', handleKey)
+    return () => document.removeEventListener('keydown', handleKey)
+  }, [])
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [mobileOpen])
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/80 backdrop-blur-xl border-b border-slate-100 shadow-sm'
+          ? 'bg-white/90 backdrop-blur-xl border-b border-slate-100 shadow-sm'
           : 'bg-transparent'
       }`}
+      role="navigation"
+      aria-label="Main navigation"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2.5 group">
+          <a href="#" className="flex items-center gap-2.5 group" aria-label="Grounded Pulse Home">
             <div className="relative w-8 h-8">
               <div className="absolute inset-0 bg-gradient-to-br from-brand-400 to-deep-500 rounded-lg rotate-45 group-hover:rotate-[135deg] transition-transform duration-500" />
               <div className="absolute inset-0 flex items-center justify-center">
@@ -44,7 +54,7 @@ export default function Navbar() {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
+            {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
@@ -54,7 +64,7 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="#pricing"
+              href="#waitlist"
               className="inline-flex items-center gap-2 bg-slate-900 text-white text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-slate-800 transition-all hover:shadow-lg active:scale-[0.97]"
             >
               Get Early Access
@@ -68,7 +78,8 @@ export default function Navbar() {
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="md:hidden relative w-8 h-8 flex items-center justify-center"
-            aria-label="Toggle menu"
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileOpen}
           >
             <div className="flex flex-col gap-1.5">
               <span className={`block w-5 h-0.5 bg-slate-700 rounded transition-all ${mobileOpen ? 'rotate-45 translate-y-1.5' : ''}`} />
@@ -82,11 +93,14 @@ export default function Navbar() {
       {/* Mobile menu */}
       <div
         className={`md:hidden transition-all duration-300 overflow-hidden ${
-          mobileOpen ? 'max-h-80 opacity-100' : 'max-h-0 opacity-0'
+          mobileOpen ? 'max-h-[32rem] opacity-100' : 'max-h-0 opacity-0'
         }`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile navigation"
       >
         <div className="px-4 pb-5 pt-2 bg-white/95 backdrop-blur-xl border-t border-slate-100">
-          {navLinks.map((link) => (
+          {NAV_LINKS.map((link) => (
             <a
               key={link.href}
               href={link.href}
@@ -97,7 +111,7 @@ export default function Navbar() {
             </a>
           ))}
           <a
-            href="#pricing"
+            href="#waitlist"
             onClick={() => setMobileOpen(false)}
             className="mt-3 block text-center bg-slate-900 text-white text-sm font-semibold px-5 py-3 rounded-xl hover:bg-slate-800 transition-all"
           >
